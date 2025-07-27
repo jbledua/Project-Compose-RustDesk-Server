@@ -30,6 +30,7 @@ services:
       - TS_USERSPACE=false
     volumes:
       - ./tailscale-state:/var/lib/tailscale
+    network_mode: host
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
