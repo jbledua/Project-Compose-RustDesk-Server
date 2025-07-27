@@ -1,7 +1,6 @@
 services:
   rustdesk-hbbs:
     image: rustdesk/rustdesk-server:latest
-    command: hbbs -k ${RUSTDESK_KEY}
     ports:
       - "21115:21115"
       - "21116:21116"
