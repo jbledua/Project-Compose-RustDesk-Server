@@ -1,26 +1,18 @@
 services:
-  hbbs:
-    container_name: hbbs
-    image: docker.io/rustdesk/rustdesk-server-pro:latest
-    command: hbbs
+  mealie:
+    container_name: mealie
+    image: ghcr.io/mealie-recipes/mealie:v1.0.0
     volumes:
-      - ./data:/root
+      - ./mealie-data:/app/data
+    environment:
+      - ALLOW_SIGNUP=true
     network_mode: "host"
-
     depends_on:
-      - hbbr
-    restart: unless-stopped
-
-  hbbr:
-    container_name: hbbr
-    image: docker.io/rustdesk/rustdesk-server-pro:latest
-    command: hbbr
-    volumes:
-      - ./data:/root
-    network_mode: "host"
+      - tailscale
     restart: unless-stopped
 
   tailscale:
+    container_name: tailscale
     image: tailscale/tailscale:latest
     hostname: ${TAILSCALE_HOSTNAME}
     environment:
@@ -30,7 +22,8 @@ services:
       - TS_USERSPACE=false
     volumes:
       - ./tailscale-state:/var/lib/tailscale
-    network_mode: host
+      - ./tailscale-config:/config
+    network_mode: "host"
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
